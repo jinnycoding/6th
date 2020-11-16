@@ -1,0 +1,62 @@
+import React, { useState } from 'react';
+
+const Board = () => {
+  const [names, setNames] = useState([
+    //{ id: 1, text: '첫 번째 글', textarea: 'react 첫 study' },
+    //{ id: 2, text: '두 번째 글', textarea: '다들 화이팅' },
+  ]);
+  const [inputText, setInputText] = useState('');
+  const [nextId, setNextId] = useState(1);
+  const [Textarea, setTextarea] = useState('');
+
+  const onChange = (e) => setInputText(e.target.value);
+  const onChangee = (e) => setTextarea(e.target.value);
+  const onClick = () => {
+    const nextNames = names.concat({
+      id: nextId,
+      text: inputText,
+      textarea: Textarea,
+    });
+    setNextId(nextId + 1);
+    setNames(nextNames);
+    setInputText('');
+    setTextarea('');
+  };
+
+  const onRemove = (id) => {
+    const nextNames = names.filter((name) => name.id !== id);
+    setNames(nextNames);
+  };
+
+  const namesList = names.map((name) => (
+    <li
+      style={{ listStyle: 'none', paddingLeft: '0px' }}
+      key={name.id}
+      onDoubleClick={() => onRemove(name.id)}
+    >
+      {'제목: ' + name.text}
+      <br />
+      {'내용: ' + name.textarea}
+      <br />
+    </li>
+  ));
+  return (
+    <div
+      style={{
+        paddingLeft: '20px',
+      }}
+    >
+      <h1>게시판</h1>
+      <input placeholder="글 제목" value={inputText} onChange={onChange} />
+      <br />
+      <textarea placeholder="내용" value={Textarea} onChange={onChangee} />
+      <br />
+      <button>파일선택</button> 선택된 파일 없음
+      <br />
+      <button onClick={onClick}>작성하기</button>
+      <ul>{namesList}</ul>
+    </div>
+  );
+};
+
+export default Board;
